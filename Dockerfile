@@ -11,8 +11,11 @@ RUN addgroup -S frp \
  && tar -zxv -f frp.tar.gz \
  && rm -rf frp.tar.gz \
  && mv frp_*_linux_amd64 /frp \
- && chown -R frp:frp /frp \
- && mv /entrypoint.sh /frp/
+ && chown -R frp:frp /frp
+
+COPY --chown=frp entrypoint.sh /frp/entrypoint.sh
+
+RUN  chmod +x /frp/entrypoint.sh
 
 USER frp
 
@@ -20,6 +23,4 @@ WORKDIR /frp
 
 EXPOSE 7000
 
-RUN ["chmod", "+x", "./entrypoint.sh"]
-
-CMD ["./entrypoint.sh"]
+CMD ["/frp/entrypoint.sh"]
