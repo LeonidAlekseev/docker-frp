@@ -5,29 +5,28 @@ if [ -z $MODE ]; then
 fi
 
 if [ $FRP_TOKEN ]; then
-  sed -i "1 w token = $FRP_TOKEN" /frp/frps.ini
-  sed -i "1 w token = $FRP_TOKEN" /frp/frpc.ini
-fi
-if [ $LOG_FILE ]; then
-  sed -i "s|log_file = $LOG_FILE|g" /frp/frps.ini
-  sed -i "s|log_file = $LOG_FILE|g" /frp/frpc.ini
+  sed -i "1 a token = $FRP_TOKEN" /frp/frps.ini
+  sed -i "1 a token = $FRP_TOKEN" /frp/frpc.ini
 fi
 
 if [ $MODE = server ]; then
-  sed -i "s|bind_port = 7000|g" /frp/frps.ini
+  if [ $BIND_PORT ] ; then
+    sed -i "s|bind_port = 7000|bind_port = $BIND_PORT|g" /frp/frps.ini
+  fi
   if [ $ALLOW_PORTS_START ] && [ $ALLOW_PORTS_END ]; then
-    sed -i "s|allow_ports = $ALLOW_PORTS_START-$ALLOW_PORTS_END|g" /frp/frps.ini
+    sed -i "s|allow_ports = 2000-3000,3001,3003,4000-50000|allow_ports = $ALLOW_PORTS_START-$ALLOW_PORTS_END|g" /frp/frps.ini
   fi
   /frp/frps -c /frp/frps.ini
+  
 else
-  if [ $SERVER_ADDR ]; then
-    sed -i "s|server_addr = 127.0.0.1|server_addr = $SERVER_ADDR|g" /frp/frpc.ini
-  fi
   if [ $FRP_USER ]; then
     sed -i "1 a user = $FRP_USER" /frp/frpc.ini
   fi
   if [ $PROXY_NAME ]; then
     sed -i "s|ssh|$PROXY_NAME|g" /frp/frpc.ini
+  fi
+  if [ $SERVER_ADDR ]; then
+    sed -i "s|server_addr = 127.0.0.1|server_addr = $SERVER_ADDR|g" /frp/frpc.ini
   fi
   if [ $SERVER_PORT ]; then
     sed -i "s|server_port = 7000|server_port = $SERVER_PORT|g" /frp/frpc.ini
