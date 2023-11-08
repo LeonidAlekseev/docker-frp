@@ -20,4 +20,4 @@ WORKDIR /frp
 
 EXPOSE 7000
 
-CMD ["./entrypoint.sh"]
+RUN ["chmod", "+x", "/frp/entrypoint.sh"]
