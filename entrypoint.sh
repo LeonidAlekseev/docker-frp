@@ -13,8 +13,8 @@ if [ $MODE = server ]; then
   if [ $BIND_PORT ] ; then
     sed -i "s|bind_port = 7000|bind_port = $BIND_PORT|g" /frp/frps.ini
   fi
-  if [ $ALLOW_PORTS_START ] && [ $ALLOW_PORTS_END ]; then
-    sed -i "s|allow_ports = 2000-3000,3001,3003,4000-50000|allow_ports = $ALLOW_PORTS_START-$ALLOW_PORTS_END|g" /frp/frps.ini
+  if [ $ALLOW_PORTS ]; then
+    sed -i "s|allow_ports = *|allow_ports = $ALLOW_PORTS|g" /frp/frps.ini
   fi
   /frp/frps -c /frp/frps.ini
   
