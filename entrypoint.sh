@@ -1,4 +1,5 @@
-#!/bin/sh
+#! /usr/bin/env sh
+
 if [ -z $MODE ]; then
   MODE=server
 fi

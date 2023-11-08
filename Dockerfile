@@ -20,4 +20,4 @@ WORKDIR /frp
 
 EXPOSE 7000
 
-CMD ["/frp/entrypoint.sh"]
+CMD ["./entrypoint.sh"]
