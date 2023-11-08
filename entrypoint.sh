@@ -3,14 +3,16 @@
 if [ -z $MODE ]; then
   MODE=server
 fi
+
 if [ $FRP_TOKEN ]; then
-  sed -i "1 a token = $FRP_TOKEN" /frp/frps.ini
-  sed -i "1 a token = $FRP_TOKEN" /frp/frpc.ini
+  sed -i "1 w token = $FRP_TOKEN" /frp/frps.ini
+  sed -i "1 w token = $FRP_TOKEN" /frp/frpc.ini
 fi
 if [ $LOG_FILE ]; then
   sed -i "s|log_file = $LOG_FILE|g" /frp/frps.ini
   sed -i "s|log_file = $LOG_FILE|g" /frp/frpc.ini
 fi
+
 if [ $MODE = server ]; then
   sed -i "s|bind_port = 7000|g" /frp/frps.ini
   if [ $ALLOW_PORTS_START ] && [ $ALLOW_PORTS_END ]; then
